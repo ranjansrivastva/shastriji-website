@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap');
+
+@import "tailwindcss";
+
+:root {
+  --saffron: #D4600A;
+  --saffron-light: #F5E6D0;
+  --saffron-pale: #FDF6EC;
+  --gold: #B8860B;
+  --gold-light: #F0D080;
+  --maroon: #6B1A1A;
+  --cream: #FAF6F0;
+  --brown: #4A2C0A;
+  --text: #2C1A0A;
+  --muted: #7A5C3A;
+
+  --color-saffron: #D4600A;
+  --color-saffron-light: #F5E6D0;
+  --color-saffron-pale: #FDF6EC;
+  --color-maroon: #6B1A1A;
+  --color-cream: #FAF6F0;
+  --color-brown: #4A2C0A;
+  --color-muted: #7A5C3A;
+}
+
+@theme {
+  --color-saffron: #D4600A;
+  --color-saffron-light: #F5E6D0;
+  --color-saffron-pale: #FDF6EC;
+  --color-gold: #B8860B;
+  --color-gold-light: #F0D080;
+  --color-maroon: #6B1A1A;
+  --color-cream: #FAF6F0;
+  --color-brown: #4A2C0A;
+  --color-muted: #7A5C3A;
+
+  --font-sans: 'Jost', sans-serif;
+  --font-serif: 'Cormorant Garamond', serif;
+}
+
+body {
+  background: var(--cream);
+  color: var(--text);
+  font-family: 'Jost', sans-serif;
+}
+
+.font-serif {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.font-sans {
+  font-family: 'Jost', sans-serif;
+}
