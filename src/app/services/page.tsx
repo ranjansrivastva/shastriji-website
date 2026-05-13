@@ -1,65 +1,7 @@
 import Link from 'next/link'
+import { priestConfig } from '@/config/priest.config'
 
-const categories = [
-  {
-    title: 'Regular Pooja',
-    items: [
-      { name: 'Ganesh Pooja', desc: 'Morning / Evening' },
-      { name: 'Satyanarayan Katha', desc: 'Monthly & on demand' },
-      { name: 'Lakshmi Pooja', desc: 'Fridays & Deepawali' },
-      { name: 'Rudrabhishek', desc: 'Monday Shravan' },
-      { name: 'Navagraha Pooja', desc: 'Planetary remedy' },
-      { name: 'Durga Saptashati', desc: 'Navaratri & monthly' },
-      { name: 'Vishnu Sahasranama', desc: 'Ekadashi' },
-      { name: 'Sundarkand Path', desc: 'Tuesday & Saturday' },
-    ],
-  },
-  {
-    title: 'Havan & Homam',
-    items: [
-      { name: 'Ganesh Havan', desc: 'Remove obstacles' },
-      { name: 'Navagraha Homa', desc: 'Planetary remedy' },
-      { name: 'Mrityunjaya Homa', desc: 'Health & longevity' },
-      { name: 'Vastu Havan', desc: 'New home / office' },
-      { name: 'Sudarshana Homa', desc: 'Protection' },
-      { name: 'Ayush Homa', desc: 'Long life & health' },
-    ],
-  },
-  {
-    title: 'Life Event Samskaras',
-    items: [
-      { name: 'Jatakarma', desc: 'Birth ceremony' },
-      { name: 'Namakaran', desc: 'Naming ceremony' },
-      { name: 'Annaprashan', desc: 'First solid food' },
-      { name: 'Karnavedha', desc: 'Ear piercing' },
-      { name: 'Nath / Nasavedha', desc: 'Nose piercing' },
-      { name: 'Mundan / Chudakarma', desc: 'First hair removal' },
-      { name: 'Upanayana', desc: 'Sacred thread ceremony' },
-      { name: 'Vivah / Wedding', desc: 'Marriage ceremony' },
-      { name: 'Antim Sanskar', desc: 'Last rites' },
-    ],
-  },
-  {
-    title: 'Katha Vachan',
-    items: [
-      { name: 'Bhagwat Katha', desc: '1 day or 7 days' },
-      { name: 'Ram Katha', desc: '1 day or multi-day' },
-      { name: 'Shiv Maha Puran', desc: 'Per day' },
-      { name: 'Devi Bhagwat', desc: 'Navaratri special' },
-      { name: 'Sundarkand Path', desc: 'Group recitation' },
-    ],
-  },
-  {
-    title: 'Business & Vastu',
-    items: [
-      { name: 'Griha Pravesh', desc: 'House warming' },
-      { name: 'Vastu Shanti', desc: 'Property blessing' },
-      { name: 'Business Opening Pooja', desc: 'New business' },
-      { name: 'Bhoomi Pujan', desc: 'Groundbreaking' },
-      { name: 'Satyanarayan Katha', desc: 'Business milestone' },
-    ],
-  },
-]
+const { services, navSymbol } = priestConfig
 
 export default function ServicesPage() {
   return (
@@ -70,14 +12,14 @@ export default function ServicesPage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-xs tracking-widest uppercase mb-2 opacity-70"
             style={{ color: 'var(--gold-light)' }}>
-            ✦ What We Offer
+            {navSymbol} What We Offer
           </div>
           <h1 className="font-serif text-5xl" style={{ color: '#FFF8EE' }}>Our Sacred Services</h1>
         </div>
       </div>
 
       {/* Categories */}
-      {categories.map((cat, ci) => (
+      {services.map((cat, ci) => (
         <section key={cat.title}
           className="px-8 py-12"
           style={{ background: ci % 2 === 0 ? 'white' : 'var(--saffron-pale)' }}>

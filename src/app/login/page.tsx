@@ -1,6 +1,9 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
+import { priestConfig } from '@/config/priest.config'
+
+const { symbol } = priestConfig
 
 export default function LoginPage() {
   const [tab, setTab] = useState<'signin' | 'register'>('signin')
@@ -20,7 +23,7 @@ export default function LoginPage() {
       <div className="max-w-md mx-auto">
 
         <div className="text-center mb-8">
-          <div className="text-4xl mb-2">ॐ</div>
+          <div className="text-4xl mb-2">{symbol}</div>
           <h1 className="font-serif text-3xl mb-1" style={{ color: 'var(--maroon)' }}>
             {tab === 'signin' ? 'Welcome Back' : 'Create Account'}
           </h1>

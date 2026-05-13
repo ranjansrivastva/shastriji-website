@@ -1,6 +1,9 @@
 'use client'
 import Link from 'next/link'
 import { useState } from 'react'
+import { priestConfig } from '@/config/priest.config'
+
+const { navLinks, name, navSymbol, admin } = priestConfig
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -9,19 +12,11 @@ export default function Navbar() {
     <nav style={{ background: 'var(--maroon)' }} className="sticky top-0 z-50">
       <div className="flex items-center justify-between px-8 h-14">
         <Link href="/" className="font-serif text-lg" style={{ color: 'var(--gold-light)' }}>
-          ✦ Gopal Chandra Shastri Jee
+          {navSymbol} {name}
         </Link>
 
         <div className="hidden md:flex gap-5">
-          {[
-            { href: '/', label: 'Home' },
-            { href: '/services', label: 'Services' },
-            { href: '/booking', label: 'Book a Pooja' },
-            { href: '/education', label: 'Education' },
-            { href: '/gallery', label: 'Gallery' },
-            { href: '/about', label: 'About' },
-            { href: '/contact', label: 'Contact' },
-          ].map(link => (
+          {navLinks.map(link => (
             <Link
               key={link.href}
               href={link.href}
@@ -41,6 +36,15 @@ export default function Navbar() {
           >
             Login
           </Link>
+          {admin.enabled && (
+            <Link
+              href="/admin/dashboard"
+              className="hidden md:block text-xs px-4 py-2 rounded-sm uppercase tracking-wide"
+              style={{ color: 'rgba(255,240,200,0.6)', border: '1px solid rgba(255,240,200,0.2)' }}
+            >
+              Admin
+            </Link>
+          )}
           <button
             className="md:hidden"
             style={{ color: 'rgba(255,240,200,0.8)' }}
@@ -58,16 +62,7 @@ export default function Navbar() {
 
       {menuOpen && (
         <div className="md:hidden px-6 pb-4 flex flex-col gap-3" style={{ background: 'var(--maroon)' }}>
-          {[
-            { href: '/', label: 'Home' },
-            { href: '/services', label: 'Services' },
-            { href: '/booking', label: 'Book a Pooja' },
-            { href: '/education', label: 'Education' },
-            { href: '/gallery', label: 'Gallery' },
-            { href: '/about', label: 'About' },
-            { href: '/contact', label: 'Contact' },
-            { href: '/login', label: 'Login / Register' },
-          ].map(link => (
+          {navLinks.map(link => (
             <Link
               key={link.href}
               href={link.href}
@@ -78,6 +73,24 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+          <Link
+            href="/login"
+            className="text-sm py-1"
+            style={{ color: 'rgba(255,240,200,0.8)' }}
+            onClick={() => setMenuOpen(false)}
+          >
+            Login / Register
+          </Link>
+          {admin.enabled && (
+            <Link
+              href="/admin/dashboard"
+              className="text-sm py-1"
+              style={{ color: 'rgba(255,240,200,0.5)' }}
+              onClick={() => setMenuOpen(false)}
+            >
+              Admin Portal
+            </Link>
+          )}
         </div>
       )}
     </nav>

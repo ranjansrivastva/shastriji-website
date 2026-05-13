@@ -1,36 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { priestConfig } from '@/config/priest.config'
 
-const timeline = [
-  {
-    year: 'Birth',
-    title: 'Born in Odisha, India',
-    text: 'Raised in a deeply spiritual environment in Odisha, Shastriji developed an early love of Sanskrit, scripture, and ritual from his family and community.',
-  },
-  {
-    year: 'Education',
-    title: 'Sampurnanand Sanskrit Vishwavidyalaya, Kashi',
-    text: 'Completed his Vedic education at one of India\'s oldest and most respected Sanskrit universities, specialising in Karmakanda, Katha Vachan, and Vedic ritual procedure.',
-  },
-  {
-    year: 'India',
-    title: 'Head Priest — Temples across India',
-    text: 'Served as head priest at temples across India, conducting major Mahotsavams, Katha events, Havans, and thousands of family Samskaras.',
-  },
-  {
-    year: 'USA',
-    title: 'Head Priest — Dallas–Fort Worth & Houston',
-    text: 'Brought his Vedic expertise to North America, serving as head priest at temples in the DFW and Houston areas, serving families of all regional Indian traditions.',
-  },
-]
-
-const languages = ['Hindi', 'Odia', 'Telugu', 'Bengali', 'Sanskrit', 'English', '+ more']
-
-const specialisations = [
-  { title: 'Katha Vachan', desc: 'Bhagwat Katha, Ram Katha, Shiv Maha Puran, Devi Bhagwat, and more' },
-  { title: 'Vedic Samskaras', desc: 'All 16 life ceremonies from birth to death, North & South Indian style' },
-  { title: 'Havan & Homam', desc: 'Navagraha, Ganesh, Mrityunjaya, Sudarshana, Vastu & more' },
-]
+const { name, navSymbol, photo, photoAlt, languages, timeline, specialisations, bio, aboutStats, contact } = priestConfig
 
 export default function AboutPage() {
   return (
@@ -40,9 +12,9 @@ export default function AboutPage() {
       <div className="px-8 py-12" style={{ background: 'var(--maroon)' }}>
         <div className="max-w-6xl mx-auto">
           <div className="text-xs tracking-widest uppercase mb-2 opacity-70"
-            style={{ color: 'var(--gold-light)' }}>✦ His Story</div>
+            style={{ color: 'var(--gold-light)' }}>{navSymbol} His Story</div>
           <h1 className="font-serif text-5xl" style={{ color: '#FFF8EE' }}>
-            About Gopal Chandra Shastri Jee
+            About {name}
           </h1>
         </div>
       </div>
@@ -56,8 +28,8 @@ export default function AboutPage() {
             <div className="relative rounded overflow-hidden mb-5"
               style={{ height: '380px', border: '1px solid rgba(180,120,40,0.2)' }}>
               <Image
-                src="/images/shastriji.jpeg"
-                alt="Gopal Chandra Shastri Jee"
+                src={photo}
+                alt={photoAlt}
                 fill
                 className="object-cover object-top"
               />
@@ -87,34 +59,21 @@ export default function AboutPage() {
           <div className="md:col-span-2">
             <div className="w-12 h-0.5 mb-2" style={{ background: 'var(--saffron)' }} />
             <h2 className="font-serif text-3xl mb-1" style={{ color: 'var(--maroon)' }}>
-              A Life in Service to Dharma
+              {bio.headline}
             </h2>
-            <p className="text-sm font-light leading-relaxed mb-3"
-              style={{ color: 'var(--muted)' }}>
-              Born and raised in the spiritually rich land of Odisha, Gopal Chandra Shastri Jee
-              was immersed in Vedic culture from his earliest years. His formal education at the
-              renowned Sampurnanand Sanskrit Vishwavidyalaya in Kashi — one of India's most
-              prestigious centres of Sanskrit and Vedic learning — gave him a deep mastery of
-              Karmakanda, Katha Vachan, and the full spectrum of Hindu ritual traditions.
+            <p className="text-sm font-light leading-relaxed mb-3" style={{ color: 'var(--muted)' }}>
+              {bio.paragraph1}
             </p>
-            <p className="text-sm font-light leading-relaxed mb-8"
-              style={{ color: 'var(--muted)' }}>
-              With over two decades of service as Head Priest at temples in India, the
-              Dallas–Fort Worth area, and Houston, Shastriji has guided thousands of families
-              through life's most sacred milestones — from the joy of a child's first
-              rice-feeding to the solemnity of last rites, and every ceremony in between.
+            <p className="text-sm font-light leading-relaxed mb-8" style={{ color: 'var(--muted)' }}>
+              {bio.paragraph2}
             </p>
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-0 rounded overflow-hidden mb-8"
               style={{ border: '1px solid rgba(180,120,40,0.2)' }}>
-              {[
-                { num: '20+', label: 'Years of service' },
-                { num: '6+', label: 'Languages' },
-                { num: 'All', label: 'Indian traditions' },
-              ].map((s, i) => (
+              {aboutStats.map((s, i) => (
                 <div key={i} className="py-5 text-center bg-white"
-                  style={{ borderRight: i < 2 ? '1px solid rgba(180,120,40,0.2)' : 'none' }}>
+                  style={{ borderRight: i < aboutStats.length - 1 ? '1px solid rgba(180,120,40,0.2)' : 'none' }}>
                   <div className="font-serif text-3xl" style={{ color: 'var(--saffron)' }}>{s.num}</div>
                   <div className="text-xs font-light mt-1" style={{ color: 'var(--muted)' }}>{s.label}</div>
                 </div>
@@ -172,7 +131,7 @@ export default function AboutPage() {
             Book a ceremony with Shastriji
           </div>
           <div className="text-sm font-light" style={{ color: 'rgba(255,240,200,0.55)' }}>
-            Serving DFW and Houston · 608 575 9510
+            Serving {contact.serviceAreasDisplay} · {contact.phone}
           </div>
         </div>
         <Link href="/booking"

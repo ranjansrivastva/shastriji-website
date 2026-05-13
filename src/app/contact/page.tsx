@@ -1,16 +1,46 @@
 'use client'
 import { useState } from 'react'
+import { priestConfig } from '@/config/priest.config'
+
+const { contact, languages, navSymbol, contactInquiryTypes } = priestConfig
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false)
   const [form, setForm] = useState({
-    name: '', email: '', phone: '', inquiry: 'Book a ceremony', message: ''
+    name: '', email: '', phone: '', inquiry: contactInquiryTypes[0], message: ''
   })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setSubmitted(true)
   }
+
+  const contactItems = [
+    {
+      icon: '📞',
+      label: 'Phone / WhatsApp',
+      value: contact.phone,
+      sub: contact.whatsappAvailable ? 'Call or WhatsApp anytime' : 'Call anytime',
+    },
+    {
+      icon: '✉️',
+      label: 'Email',
+      value: contact.email,
+      sub: `We respond within ${contact.responseTime}`,
+    },
+    {
+      icon: '📍',
+      label: 'Service Areas',
+      value: contact.serviceAreasDisplay,
+      sub: `Home visits across the ${contact.serviceAreas[0]} metroplex`,
+    },
+    {
+      icon: '🕐',
+      label: 'Availability',
+      value: contact.availability,
+      sub: contact.availabilityNote,
+    },
+  ]
 
   return (
     <main>
@@ -19,7 +49,7 @@ export default function ContactPage() {
       <div className="px-8 py-12" style={{ background: 'var(--maroon)' }}>
         <div className="max-w-6xl mx-auto">
           <div className="text-xs tracking-widest uppercase mb-2 opacity-70"
-            style={{ color: 'var(--gold-light)' }}>✦ Get in Touch</div>
+            style={{ color: 'var(--gold-light)' }}>{navSymbol} Get in Touch</div>
           <h1 className="font-serif text-5xl" style={{ color: '#FFF8EE' }}>Contact Us</h1>
         </div>
       </div>
@@ -33,32 +63,7 @@ export default function ContactPage() {
             <h2 className="font-serif text-3xl mb-6" style={{ color: 'var(--maroon)' }}>
               Reach Shastriji
             </h2>
-            {[
-              {
-                icon: '📞',
-                label: 'Phone / WhatsApp',
-                value: '608 575 9510',
-                sub: 'Call or WhatsApp anytime'
-              },
-              {
-                icon: '✉️',
-                label: 'Email',
-                value: 'info@gopalshastriji.com',
-                sub: 'We respond within 24 hours'
-              },
-              {
-                icon: '📍',
-                label: 'Service Areas',
-                value: 'Dallas–Fort Worth & Houston, TX',
-                sub: 'Home visits across the DFW metroplex'
-              },
-              {
-                icon: '🕐',
-                label: 'Availability',
-                value: 'Daily 6:00 AM – 8:00 PM',
-                sub: 'Bookings at least 1 day in advance'
-              },
-            ].map(item => (
+            {contactItems.map(item => (
               <div key={item.label} className="flex gap-4 mb-6">
                 <div className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0"
                   style={{ background: 'var(--saffron-light)' }}>
@@ -83,7 +88,7 @@ export default function ContactPage() {
                 Languages
               </div>
               <div className="flex flex-wrap gap-2">
-                {['Hindi', 'Odia', 'Telugu', 'Bengali', 'Sanskrit', 'English'].map(l => (
+                {languages.filter(l => l !== '+ more').map(l => (
                   <span key={l} className="text-xs px-3 py-1 rounded-full"
                     style={{
                       background: 'var(--saffron-light)',
@@ -106,7 +111,7 @@ export default function ContactPage() {
                   Message Sent!
                 </h3>
                 <p className="text-sm font-light" style={{ color: 'var(--muted)' }}>
-                  Thank you for reaching out. Shastriji will get back to you within 24 hours.
+                  Thank you for reaching out. Shastriji will get back to you within {contact.responseTime}.
                 </p>
               </div>
             ) : (
@@ -123,11 +128,7 @@ export default function ContactPage() {
                       value={form.name}
                       onChange={e => setForm({ ...form, name: e.target.value })}
                       className="w-full px-3 py-2 text-sm rounded"
-                      style={{
-                        border: '1px solid rgba(180,120,40,0.3)',
-                        background: 'var(--saffron-pale)',
-                        outline: 'none'
-                      }}
+                      style={{ border: '1px solid rgba(180,120,40,0.3)', background: 'var(--saffron-pale)', outline: 'none' }}
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-3">
@@ -139,11 +140,7 @@ export default function ContactPage() {
                         value={form.email}
                         onChange={e => setForm({ ...form, email: e.target.value })}
                         className="w-full px-3 py-2 text-sm rounded"
-                        style={{
-                          border: '1px solid rgba(180,120,40,0.3)',
-                          background: 'var(--saffron-pale)',
-                          outline: 'none'
-                        }}
+                        style={{ border: '1px solid rgba(180,120,40,0.3)', background: 'var(--saffron-pale)', outline: 'none' }}
                       />
                     </div>
                     <div>
@@ -154,11 +151,7 @@ export default function ContactPage() {
                         value={form.phone}
                         onChange={e => setForm({ ...form, phone: e.target.value })}
                         className="w-full px-3 py-2 text-sm rounded"
-                        style={{
-                          border: '1px solid rgba(180,120,40,0.3)',
-                          background: 'var(--saffron-pale)',
-                          outline: 'none'
-                        }}
+                        style={{ border: '1px solid rgba(180,120,40,0.3)', background: 'var(--saffron-pale)', outline: 'none' }}
                       />
                     </div>
                   </div>
@@ -169,17 +162,9 @@ export default function ContactPage() {
                       value={form.inquiry}
                       onChange={e => setForm({ ...form, inquiry: e.target.value })}
                       className="w-full px-3 py-2 text-sm rounded"
-                      style={{
-                        border: '1px solid rgba(180,120,40,0.3)',
-                        background: 'var(--saffron-pale)',
-                        outline: 'none'
-                      }}
+                      style={{ border: '1px solid rgba(180,120,40,0.3)', background: 'var(--saffron-pale)', outline: 'none' }}
                     >
-                      <option>Book a ceremony</option>
-                      <option>Education enquiry</option>
-                      <option>Pricing information</option>
-                      <option>Katha Vachan enquiry</option>
-                      <option>General question</option>
+                      {contactInquiryTypes.map(t => <option key={t}>{t}</option>)}
                     </select>
                   </div>
                   <div>
@@ -191,11 +176,7 @@ export default function ContactPage() {
                       value={form.message}
                       onChange={e => setForm({ ...form, message: e.target.value })}
                       className="w-full px-3 py-2 text-sm rounded resize-none"
-                      style={{
-                        border: '1px solid rgba(180,120,40,0.3)',
-                        background: 'var(--saffron-pale)',
-                        outline: 'none'
-                      }}
+                      style={{ border: '1px solid rgba(180,120,40,0.3)', background: 'var(--saffron-pale)', outline: 'none' }}
                     />
                   </div>
                   <button type="submit"

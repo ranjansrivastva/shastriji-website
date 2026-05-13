@@ -1,4 +1,7 @@
 import Link from 'next/link'
+import { priestConfig } from '@/config/priest.config'
+
+const { name, navSymbol, site, footerServices, footerInfoLinks, contact } = priestConfig
 
 export default function Footer() {
   return (
@@ -7,26 +10,21 @@ export default function Footer() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <div className="font-serif text-lg mb-2" style={{ color: 'var(--gold-light)' }}>
-              ✦ Gopal Chandra Shastri Jee
+              {navSymbol} {name}
             </div>
             <p className="text-xs font-light leading-relaxed" style={{ color: 'rgba(255,240,200,0.5)' }}>
-              Vedic Pandit & Katha Vachak serving the Hindu community of Dallas–Fort Worth and Houston with authentic rituals and spiritual education.
+              {site.footerTagline}
             </p>
           </div>
           <div>
             <div className="text-xs tracking-widest uppercase mb-3" style={{ color: 'rgba(255,240,200,0.45)' }}>Services</div>
-            {['Temple Pooja', 'Home Pooja', 'Life Events', 'Katha Vachan', 'Education'].map(s => (
+            {footerServices.map(s => (
               <div key={s} className="text-xs mb-1.5" style={{ color: 'rgba(255,240,200,0.65)' }}>{s}</div>
             ))}
           </div>
           <div>
             <div className="text-xs tracking-widest uppercase mb-3" style={{ color: 'rgba(255,240,200,0.45)' }}>Info</div>
-            {[
-              { label: 'About Shastriji', href: '/about' },
-              { label: 'Gallery', href: '/gallery' },
-              { label: 'Testimonials', href: '/#testimonials' },
-              { label: 'Contact', href: '/contact' },
-            ].map(l => (
+            {footerInfoLinks.map(l => (
               <Link key={l.href} href={l.href} className="block text-xs mb-1.5" style={{ color: 'rgba(255,240,200,0.65)' }}>
                 {l.label}
               </Link>
@@ -34,15 +32,17 @@ export default function Footer() {
           </div>
           <div>
             <div className="text-xs tracking-widest uppercase mb-3" style={{ color: 'rgba(255,240,200,0.45)' }}>Contact</div>
-            <div className="text-xs mb-1.5" style={{ color: 'rgba(255,240,200,0.65)' }}>608 575 9510</div>
-            <div className="text-xs mb-1.5" style={{ color: 'rgba(255,240,200,0.65)' }}>info@gopalshastriji.com</div>
-            <div className="text-xs mb-1.5" style={{ color: 'rgba(255,240,200,0.65)' }}>Dallas–Fort Worth, TX</div>
-            <div className="text-xs" style={{ color: 'rgba(255,240,200,0.65)' }}>Houston, TX</div>
+            <div className="text-xs mb-1.5" style={{ color: 'rgba(255,240,200,0.65)' }}>{contact.phone}</div>
+            <div className="text-xs mb-1.5" style={{ color: 'rgba(255,240,200,0.65)' }}>{contact.email}</div>
+            <div className="text-xs mb-1.5" style={{ color: 'rgba(255,240,200,0.65)' }}>{contact.location}</div>
+            <div className="text-xs" style={{ color: 'rgba(255,240,200,0.65)' }}>{contact.locationSecondary}</div>
           </div>
         </div>
       </footer>
       <div style={{ background: '#3A0000' }} className="px-8 py-3 flex justify-between items-center">
-        <span className="text-xs" style={{ color: 'rgba(255,240,200,0.35)' }}>© 2025 Gopal Chandra Shastri Jee. All rights reserved.</span>
+        <span className="text-xs" style={{ color: 'rgba(255,240,200,0.35)' }}>
+          © {site.copyrightYear} {name}. All rights reserved.
+        </span>
         <span className="text-xs" style={{ color: 'rgba(255,240,200,0.35)' }}>Privacy · Terms</span>
       </div>
     </>

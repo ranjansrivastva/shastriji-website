@@ -1,31 +1,9 @@
 'use client'
 import { useState } from 'react'
+import { priestConfig } from '@/config/priest.config'
 
-const photos = [
-  { title: 'Wedding Ceremony', desc: 'A beautiful Vedic Vivah Sanskaar — seven steps, sacred fire, and lifelong vows.', category: 'Life Events' },
-  { title: 'Ganesh Havan', desc: 'Sacred fire ritual invoking Lord Ganesh — removal of obstacles and new beginnings.', category: 'Havan' },
-  { title: 'Annaprashan', desc: 'The joyous first rice-feeding ceremony for a six-month-old, surrounded by family.', category: 'Life Events' },
-  { title: 'Navaratri Festival', desc: 'Nine nights of Devi worship — the temple adorned with flowers and lights.', category: 'Festival' },
-  { title: 'Griha Pravesh', desc: 'House warming blessings — Vastu Pooja and sacred threshold crossing.', category: 'Pooja' },
-  { title: 'Bala Vihar Class', desc: 'Children learning Sanskrit shlokas — the next generation carrying dharma forward.', category: 'Education' },
-  { title: 'Mundan Ceremony', desc: 'The sacred first haircut — a joyful family moment full of blessings.', category: 'Life Events' },
-  { title: 'Diwali Pooja', desc: 'Deepawali Lakshmi Pooja at the temple — lamps, flowers, and the goddess of prosperity.', category: 'Festival' },
-  { title: 'Rudrabhishek', desc: 'Sacred Shiva Abhishekam with milk, honey, and sacred water.', category: 'Pooja' },
-  { title: 'Satyanarayan Katha', desc: 'Families gathered for Katha Vachan — stories from the Skanda Purana.', category: 'Katha' },
-  { title: 'Upanayana', desc: 'Sacred thread ceremony — a young boy\'s initiation into Vedic learning.', category: 'Life Events' },
-  { title: 'Bhagwat Katha', desc: 'Seven-day Bhagwat Katha discourse — devotees from across DFW gathered.', category: 'Katha' },
-]
-
-const videos = [
-  { title: 'Wedding Ceremony Highlights', duration: '12 min', category: 'Life Events' },
-  { title: 'Rudrabhishek — Full Recitation', duration: '28 min', category: 'Pooja' },
-  { title: 'Navagraha Homa — Morning Ritual', duration: '45 min', category: 'Havan' },
-  { title: 'Satyanarayan Katha — Full Discourse', duration: '90 min', category: 'Katha' },
-  { title: 'Bala Vihar — Sanskrit Shloka Class', duration: '20 min', category: 'Education' },
-  { title: 'Diwali Celebration at the Temple', duration: '8 min', category: 'Festival' },
-]
-
-const filters = ['All', 'Life Events', 'Pooja', 'Havan', 'Katha', 'Festival', 'Education']
+const { gallery, navSymbol } = priestConfig
+const { photos, videos, filters } = gallery
 
 export default function GalleryPage() {
   const [tab, setTab] = useState<'photos' | 'videos'>('photos')
@@ -42,7 +20,7 @@ export default function GalleryPage() {
       <div className="px-8 py-12" style={{ background: 'var(--maroon)' }}>
         <div className="max-w-6xl mx-auto">
           <div className="text-xs tracking-widest uppercase mb-2 opacity-70"
-            style={{ color: 'var(--gold-light)' }}>✦ Sacred Moments</div>
+            style={{ color: 'var(--gold-light)' }}>{navSymbol} Sacred Moments</div>
           <h1 className="font-serif text-5xl" style={{ color: '#FFF8EE' }}>Photo & Video Gallery</h1>
         </div>
       </div>

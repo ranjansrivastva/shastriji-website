@@ -1,43 +1,15 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
+import { priestConfig } from '@/config/priest.config'
 
-const categories = [
-  {
-    name: 'Regular Pooja',
-    ceremonies: ['Ganesh Pooja', 'Satyanarayan Katha', 'Lakshmi Pooja', 'Rudrabhishek', 'Navagraha Pooja', 'Sundarkand Path'],
-  },
-  {
-    name: 'Havan / Homam',
-    ceremonies: ['Ganesh Havan', 'Navagraha Homa', 'Mrityunjaya Homa', 'Vastu Havan', 'Sudarshana Homa'],
-  },
-  {
-    name: 'Life Events',
-    ceremonies: ['Namakaran', 'Annaprashan', 'Mundan / Chudakarma', 'Karnavedha', 'Nath / Nose piercing', 'Upanayana', 'Vivah / Wedding', 'Antim Sanskar'],
-  },
-  {
-    name: 'Katha Vachan',
-    ceremonies: ['Bhagwat Katha (1 day)', 'Bhagwat Katha (7 days)', 'Ram Katha', 'Shiv Maha Puran', 'Devi Bhagwat'],
-  },
-  {
-    name: 'Business / Vastu',
-    ceremonies: ['Griha Pravesh', 'Vastu Shanti', 'Business Opening Pooja', 'Bhoomi Pujan'],
-  },
-  {
-    name: 'Temple Pooja',
-    ceremonies: ['Morning Aarti', 'Evening Aarti', 'Abhishekam', 'Festival Pooja'],
-  },
-]
-
-const timeSlots = ['6:00 AM', '7:30 AM', '9:00 AM', '11:00 AM', '1:00 PM', '3:00 PM', '5:00 PM', '7:00 PM']
-const bookedSlots = ['6:00 AM', '7:30 AM', '7:00 PM']
+const { booking, navSymbol, site, contact } = priestConfig
+const { categories, timeSlots, traditions, languages, advanceBookingDays, approvalRequired, approvalHours, suggestedDakshina } = booking
 
 const daysInMonth = 31
-const startDay = 3 // May 2025 starts on Thursday
+const startDay = 3
 const bookedDays = [4, 5, 11, 14, 18, 23, 26]
-
-const traditions = ['North Indian', 'South Indian (Telugu)', 'South Indian (Tamil)', 'Bengali', 'Odia', 'Gujarati', 'Marathi', 'Other']
-const languages = ['Hindi', 'English', 'Telugu', 'Bengali', 'Odia', 'Sanskrit']
+const bookedSlots = ['6:00 AM', '7:30 AM', '7:00 PM']
 
 type Step = 1 | 2 | 3 | 4 | 5
 
@@ -51,13 +23,12 @@ export default function BookingPage() {
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null)
   const [paymentType, setPaymentType] = useState<'online' | 'inperson'>('online')
   const [form, setForm] = useState({
-    firstName: '', lastName: '', email: '', phone: '', address: '', tradition: '', language: 'Hindi', notes: ''
+    firstName: '', lastName: '', email: '', phone: '', address: '', tradition: '', language: languages[0], notes: ''
   })
 
   const steps = ['Sign in', 'Ceremony', 'Date & Time', 'Your Details', 'Confirmation']
-
   const isBooked = (day: number) => bookedDays.includes(day)
-  const isPast = (day: number) => day <= 1 // simulate today is May 1
+  const isPast = (day: number) => day <= 1
 
   return (
     <main>
@@ -66,7 +37,7 @@ export default function BookingPage() {
       <div className="px-8 py-10" style={{ background: 'var(--maroon)' }}>
         <div className="max-w-4xl mx-auto">
           <div className="text-xs tracking-widest uppercase mb-2 opacity-70"
-            style={{ color: 'var(--gold-light)' }}>✦ Schedule a Ceremony</div>
+            style={{ color: 'var(--gold-light)' }}>{navSymbol} Schedule a Ceremony</div>
           <h1 className="font-serif text-4xl" style={{ color: '#FFF8EE' }}>Book a Pooja</h1>
         </div>
       </div>
@@ -116,7 +87,7 @@ export default function BookingPage() {
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 {[
-                  { type: 'guest' as const, title: 'Continue as guest', desc: 'No account needed. Enter your contact details on the next step. You\'ll receive updates by email and phone.' },
+                  { type: 'guest' as const, title: 'Continue as guest', desc: "No account needed. Enter your contact details on the next step. You'll receive updates by email and phone." },
                   { type: 'login' as const, title: 'Sign in / Register', desc: 'Access your booking history, saved addresses, and faster checkout. Create a free account in seconds.' },
                 ].map(opt => (
                   <div key={opt.type}
@@ -227,7 +198,8 @@ export default function BookingPage() {
             <div>
               <h2 className="font-serif text-2xl mb-1" style={{ color: 'var(--maroon)' }}>Pick a date & time</h2>
               <p className="text-sm font-light mb-6" style={{ color: 'var(--muted)' }}>
-                Bookings must be made at least 1 day in advance. Shastriji will confirm within a few hours.
+                Bookings must be made at least {advanceBookingDays} day in advance.
+                {approvalRequired && ' Shastriji will confirm within a few hours.'}
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 
@@ -432,10 +404,12 @@ export default function BookingPage() {
                   <div className="p-5 rounded bg-white" style={{ border: '1px solid rgba(180,120,40,0.2)' }}>
                     <div className="text-xs font-medium tracking-widest uppercase mb-3"
                       style={{ color: 'var(--brown)' }}>Payment preference</div>
-                    <div className="flex items-start gap-2 p-3 rounded mb-4 text-xs"
-                      style={{ background: '#FFF8E1', border: '1px solid #FFD54F', color: '#7A5C00' }}>
-                      ⚠️ Payment is only charged after Shastriji approves your booking.
-                    </div>
+                    {approvalRequired && (
+                      <div className="flex items-start gap-2 p-3 rounded mb-4 text-xs"
+                        style={{ background: '#FFF8E1', border: '1px solid #FFD54F', color: '#7A5C00' }}>
+                        ⚠️ Payment is only charged after Shastriji approves your booking.
+                      </div>
+                    )}
                     <div className="grid grid-cols-2 gap-3">
                       {[
                         { type: 'online' as const, title: 'Pay online', desc: 'Card / Apple Pay after approval via Stripe.' },
@@ -463,7 +437,7 @@ export default function BookingPage() {
                       { label: 'Date & time', value: `May ${selectedDay}, ${selectedSlot}` },
                       { label: 'Location', value: location === 'home' ? 'At your home' : 'At the temple' },
                       { label: 'Service fee', value: 'TBD by Shastriji' },
-                      { label: 'Dakshina (suggested)', value: '$51.00' },
+                      { label: 'Dakshina (suggested)', value: suggestedDakshina },
                     ].map((row, i, arr) => (
                       <div key={row.label} className="flex justify-between py-1.5 text-xs"
                         style={{ borderBottom: i < arr.length - 1 ? '1px solid rgba(180,120,40,0.1)' : 'none' }}>
@@ -503,17 +477,17 @@ export default function BookingPage() {
               </h2>
               <p className="text-sm font-light leading-relaxed mb-6" style={{ color: 'var(--muted)' }}>
                 Your booking request has been sent to Shastriji. He will personally review and
-                confirm within a few hours. You'll receive a WhatsApp message and email once approved.
+                confirm within {approvalHours} hours. You'll receive a WhatsApp message and email once approved.
               </p>
               <div className="p-5 rounded text-left mb-5"
                 style={{ background: 'var(--saffron-pale)', border: '1px solid rgba(180,120,40,0.2)' }}>
                 {[
-                  { label: 'Booking ref', value: `#GCS-2025-${Math.floor(1000 + Math.random() * 9000)}` },
+                  { label: 'Booking ref', value: `#${site.bookingRefPrefix}-2025-${Math.floor(1000 + Math.random() * 9000)}` },
                   { label: 'Ceremony', value: selectedCeremony },
                   { label: 'Date & time', value: `May ${selectedDay}, 2025 · ${selectedSlot}` },
                   { label: 'Location', value: location === 'home' ? 'At your home / business' : 'At the temple' },
                   { label: 'Payment', value: paymentType === 'online' ? 'Online (after approval)' : 'In person on the day' },
-                  { label: 'Status', value: '⏳ Awaiting Shastriji\'s approval' },
+                  { label: 'Status', value: "⏳ Awaiting Shastriji's approval" },
                 ].map(row => (
                   <div key={row.label} className="flex justify-between py-1.5 text-sm"
                     style={{ borderBottom: '1px solid rgba(180,120,40,0.1)' }}>
@@ -523,8 +497,8 @@ export default function BookingPage() {
                 ))}
               </div>
               <p className="text-xs font-light mb-5" style={{ color: 'var(--muted)' }}>
-                Confirmation sent to your email and WhatsApp. If you don't hear back within 4 hours,
-                call <strong style={{ color: 'var(--brown)' }}>608 575 9510</strong>.
+                Confirmation sent to your email and WhatsApp. If you don't hear back within {approvalHours} hours,
+                call <strong style={{ color: 'var(--brown)' }}>{contact.phone}</strong>.
               </p>
               <Link href="/"
                 className="inline-block w-full py-3 text-xs uppercase tracking-wide font-medium text-center"

@@ -2,26 +2,8 @@
 
 @import "tailwindcss";
 
-:root {
-  --saffron: #D4600A;
-  --saffron-light: #F5E6D0;
-  --saffron-pale: #FDF6EC;
-  --gold: #B8860B;
-  --gold-light: #F0D080;
-  --maroon: #6B1A1A;
-  --cream: #FAF6F0;
-  --brown: #4A2C0A;
-  --text: #2C1A0A;
-  --muted: #7A5C3A;
-
-  --color-saffron: #D4600A;
-  --color-saffron-light: #F5E6D0;
-  --color-saffron-pale: #FDF6EC;
-  --color-maroon: #6B1A1A;
-  --color-cream: #FAF6F0;
-  --color-brown: #4A2C0A;
-  --color-muted: #7A5C3A;
-}
+/* CSS variable values are injected at runtime by layout.tsx from priest.config.ts */
+/* The @theme block below generates Tailwind utility classes at build time */
 
 @theme {
   --color-saffron: #D4600A;
