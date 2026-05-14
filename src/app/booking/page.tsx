@@ -18,13 +18,16 @@ export default function BookingPage() {
   const [loginType, setLoginType] = useState<'guest' | 'login'>('guest')
   const [selectedCat, setSelectedCat] = useState(0)
   const [selectedCeremony, setSelectedCeremony] = useState(categories[0].ceremonies[0])
-  const [location, setLocation] = useState<'home' | 'temple'>('home')
+  const [location, setLocation] = useState<'home' | 'business' | 'temple'>('home')
   const [selectedDay, setSelectedDay] = useState<number | null>(null)
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null)
   const [paymentType, setPaymentType] = useState<'online' | 'inperson'>('online')
   const [form, setForm] = useState({
     firstName: '', lastName: '', email: '', phone: '', address: '', tradition: '', language: languages[0], notes: ''
   })
+
+  const locationLabel = (loc: 'home' | 'business' | 'temple') =>
+    loc === 'home' ? 'At your home' : loc === 'business' ? 'At your business' : 'At the temple'
 
   const steps = ['Sign in', 'Ceremony', 'Date & Time', 'Your Details', 'Confirmation']
   const isBooked = (day: number) => bookedDays.includes(day)
@@ -131,55 +134,162 @@ export default function BookingPage() {
           {step === 2 && (
             <div>
               <h2 className="font-serif text-2xl mb-1" style={{ color: 'var(--maroon)' }}>Choose your ceremony</h2>
-              <p className="text-sm font-light mb-6" style={{ color: 'var(--muted)' }}>Select a category then pick the specific ceremony.</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <div className="text-xs font-medium tracking-widest uppercase mb-3" style={{ color: 'var(--brown)' }}>Category</div>
-                  <div className="grid grid-cols-2 gap-2 mb-5">
-                    {categories.map((cat, i) => (
-                      <div key={cat.name} onClick={() => { setSelectedCat(i); setSelectedCeremony(cat.ceremonies[0]) }}
-                        className="p-3 rounded cursor-pointer"
-                        style={{
-                          border: `1px solid ${selectedCat === i ? 'var(--saffron)' : 'rgba(180,120,40,0.2)'}`,
-                          background: selectedCat === i ? 'var(--saffron-pale)' : 'white'
-                        }}>
-                        <div className="text-xs font-medium" style={{ color: 'var(--brown)' }}>{cat.name}</div>
-                      </div>
-                    ))}
+              <p className="text-sm font-light mb-6" style={{ color: 'var(--muted)' }}>Select a category, pick the ceremony, then choose where it will be held.</p>
+
+              {/* 3-column panel */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '14px', alignItems: 'stretch' }}>
+
+                {/* ── Column 1: Category ── */}
+                <div style={{
+                  background: 'white',
+                  borderLeft: '3px solid #D4600A',
+                  borderRadius: '8px',
+                  boxShadow: '0 1px 6px rgba(0,0,0,0.07)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  overflow: 'hidden',
+                }}>
+                  <div style={{
+                    position: 'sticky', top: 0,
+                    background: 'white',
+                    padding: '14px 16px',
+                    borderBottom: '1px solid rgba(212,96,10,0.15)',
+                    display: 'flex', alignItems: 'center', gap: '10px',
+                    zIndex: 1,
+                  }}>
+                    <div style={{
+                      width: '22px', height: '22px', borderRadius: '50%',
+                      background: '#D4600A', color: 'white',
+                      fontSize: '11px', fontWeight: '700',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                    }}>1</div>
+                    <span style={{ fontWeight: '700', color: '#2C1A0A', fontSize: '13px', letterSpacing: '0.01em' }}>Select Category</span>
                   </div>
-                  <div className="text-xs font-medium tracking-widest uppercase mb-3" style={{ color: 'var(--brown)' }}>Location</div>
-                  <div className="grid grid-cols-2 gap-2">
-                    {(['home', 'temple'] as const).map(loc => (
-                      <div key={loc} onClick={() => setLocation(loc)}
-                        className="p-3 rounded cursor-pointer text-center text-sm"
+                  <div style={{ padding: '10px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    {categories.map((cat, i) => (
+                      <div key={cat.name}
+                        onClick={() => { setSelectedCat(i); setSelectedCeremony(cat.ceremonies[0]) }}
                         style={{
-                          border: `1px solid ${location === loc ? 'var(--saffron)' : 'rgba(180,120,40,0.2)'}`,
-                          background: location === loc ? 'var(--saffron-pale)' : 'white',
-                          color: 'var(--brown)'
+                          padding: '9px 12px',
+                          borderRadius: '6px',
+                          cursor: 'pointer',
+                          background: selectedCat === i ? '#D4600A' : 'transparent',
+                          color: selectedCat === i ? 'white' : '#2C1A0A',
+                          fontSize: '13px',
+                          fontWeight: selectedCat === i ? '600' : '400',
                         }}>
-                        {loc === 'home' ? 'At my home / business' : 'At the temple'}
+                        {cat.name}
                       </div>
                     ))}
                   </div>
                 </div>
-                <div>
-                  <div className="text-xs font-medium tracking-widest uppercase mb-3" style={{ color: 'var(--brown)' }}>Select ceremony</div>
-                  <div className="flex flex-col gap-2">
+
+                {/* ── Column 2: Ceremony ── */}
+                <div style={{
+                  background: '#FDF6EC',
+                  borderLeft: '3px solid #6B1A1A',
+                  borderRadius: '8px',
+                  boxShadow: '0 1px 6px rgba(0,0,0,0.07)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  overflow: 'hidden',
+                }}>
+                  <div style={{
+                    position: 'sticky', top: 0,
+                    background: '#FDF6EC',
+                    padding: '14px 16px',
+                    borderBottom: '1px solid rgba(107,26,26,0.15)',
+                    display: 'flex', alignItems: 'center', gap: '10px',
+                    zIndex: 1,
+                  }}>
+                    <div style={{
+                      width: '22px', height: '22px', borderRadius: '50%',
+                      background: '#6B1A1A', color: 'white',
+                      fontSize: '11px', fontWeight: '700',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                    }}>2</div>
+                    <span style={{ fontWeight: '700', color: '#2C1A0A', fontSize: '13px', letterSpacing: '0.01em' }}>Select Ceremony</span>
+                  </div>
+                  <div style={{ padding: '10px', display: 'flex', flexDirection: 'column', gap: '4px', overflowY: 'auto', maxHeight: '340px' }}>
                     {categories[selectedCat].ceremonies.map(cer => (
-                      <div key={cer} onClick={() => setSelectedCeremony(cer)}
-                        className="px-4 py-3 rounded cursor-pointer text-sm"
+                      <div key={cer}
+                        onClick={() => setSelectedCeremony(cer)}
                         style={{
-                          border: `1px solid ${selectedCeremony === cer ? 'var(--saffron)' : 'rgba(180,120,40,0.2)'}`,
-                          background: selectedCeremony === cer ? 'var(--saffron-pale)' : 'white',
-                          color: selectedCeremony === cer ? 'var(--maroon)' : '#2C1A0A',
-                          fontWeight: selectedCeremony === cer ? '500' : '400'
+                          padding: '9px 12px',
+                          borderRadius: '6px',
+                          cursor: 'pointer',
+                          background: selectedCeremony === cer ? '#6B1A1A' : 'white',
+                          color: selectedCeremony === cer ? 'white' : '#2C1A0A',
+                          fontSize: '13px',
+                          fontWeight: selectedCeremony === cer ? '600' : '400',
+                          border: `1px solid ${selectedCeremony === cer ? '#6B1A1A' : 'rgba(107,26,26,0.1)'}`,
                         }}>
                         {cer}
                       </div>
                     ))}
                   </div>
                 </div>
+
+                {/* ── Column 3: Location ── */}
+                <div style={{
+                  background: '#F5E6D0',
+                  borderLeft: '3px solid #B8860B',
+                  borderRadius: '8px',
+                  boxShadow: '0 1px 6px rgba(0,0,0,0.07)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  overflow: 'hidden',
+                }}>
+                  <div style={{
+                    position: 'sticky', top: 0,
+                    background: '#F5E6D0',
+                    padding: '14px 16px',
+                    borderBottom: '1px solid rgba(184,134,11,0.2)',
+                    display: 'flex', alignItems: 'center', gap: '10px',
+                    zIndex: 1,
+                  }}>
+                    <div style={{
+                      width: '22px', height: '22px', borderRadius: '50%',
+                      background: '#B8860B', color: 'white',
+                      fontSize: '11px', fontWeight: '700',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                    }}>3</div>
+                    <span style={{ fontWeight: '700', color: '#2C1A0A', fontSize: '13px', letterSpacing: '0.01em' }}>Select Location</span>
+                  </div>
+                  <div style={{ padding: '10px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {([
+                      { key: 'home' as const, icon: '🏠', title: 'At my home', desc: 'Shastriji comes to your residence' },
+                      { key: 'business' as const, icon: '🏢', title: 'At my business', desc: 'Ceremony at your workplace or business' },
+                      { key: 'temple' as const, icon: '🛕', title: 'At the temple', desc: 'Join at the local temple' },
+                    ]).map(loc => (
+                      <div key={loc.key}
+                        onClick={() => setLocation(loc.key)}
+                        style={{
+                          padding: '12px',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                          background: location === loc.key ? '#B8860B' : 'white',
+                          border: `1px solid ${location === loc.key ? '#B8860B' : 'rgba(184,134,11,0.2)'}`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '10px',
+                        }}>
+                        <span style={{ fontSize: '20px', lineHeight: 1 }}>{loc.icon}</span>
+                        <div>
+                          <div style={{ fontSize: '13px', fontWeight: '600', color: location === loc.key ? 'white' : '#2C1A0A' }}>
+                            {loc.title}
+                          </div>
+                          <div style={{ fontSize: '11px', marginTop: '2px', color: location === loc.key ? 'rgba(255,255,255,0.8)' : 'var(--muted)' }}>
+                            {loc.desc}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
               </div>
+
               <div className="flex justify-between mt-8">
                 <button onClick={() => setStep(1)} className="text-xs px-6 py-3 uppercase tracking-wide"
                   style={{ background: 'white', color: 'var(--muted)', border: '1px solid rgba(180,120,40,0.2)' }}>
@@ -289,7 +399,7 @@ export default function BookingPage() {
                     {[
                       { label: 'Ceremony', value: selectedCeremony },
                       { label: 'Category', value: categories[selectedCat].name },
-                      { label: 'Location', value: location === 'home' ? 'At your home / business' : 'At the temple' },
+                      { label: 'Location', value: locationLabel(location) },
                       { label: 'Date', value: selectedDay ? `May ${selectedDay}, 2025` : '—' },
                       { label: 'Time', value: selectedSlot || '—' },
                     ].map(row => (
@@ -435,7 +545,7 @@ export default function BookingPage() {
                     {[
                       { label: 'Ceremony', value: selectedCeremony },
                       { label: 'Date & time', value: `May ${selectedDay}, ${selectedSlot}` },
-                      { label: 'Location', value: location === 'home' ? 'At your home' : 'At the temple' },
+                      { label: 'Location', value: locationLabel(location) },
                       { label: 'Service fee', value: 'TBD by Shastriji' },
                       { label: 'Dakshina (suggested)', value: suggestedDakshina },
                     ].map((row, i, arr) => (
@@ -485,7 +595,7 @@ export default function BookingPage() {
                   { label: 'Booking ref', value: `#${site.bookingRefPrefix}-2025-${Math.floor(1000 + Math.random() * 9000)}` },
                   { label: 'Ceremony', value: selectedCeremony },
                   { label: 'Date & time', value: `May ${selectedDay}, 2025 · ${selectedSlot}` },
-                  { label: 'Location', value: location === 'home' ? 'At your home / business' : 'At the temple' },
+                  { label: 'Location', value: locationLabel(location) },
                   { label: 'Payment', value: paymentType === 'online' ? 'Online (after approval)' : 'In person on the day' },
                   { label: 'Status', value: "⏳ Awaiting Shastriji's approval" },
                 ].map(row => (
